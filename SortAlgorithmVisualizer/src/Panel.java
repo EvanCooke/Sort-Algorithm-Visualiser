@@ -4,30 +4,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class Panel extends JPanel  {
+public class Panel extends JPanel {
     static final int SCREEN_WIDTH = 1000;
     static final int SCREEN_HEIGHT = 600;
-    static final int DELAY = 1;
+    static final int UNIT_SIZE_X = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / array.length
+    static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 100;
 
-    static final int[] array = new int[10];
+    static final int DELAY = 1;
+    static int[] array = new int[100];
     static int currentIndex = Integer.MAX_VALUE;
 
     boolean running = true;
-    boolean isSorted = false;
-    static boolean sortedCondition = false;
 
-
-    static final int UNIT_SIZE_X = SCREEN_WIDTH / 10; // UNIT_SIZE = SCREEN_HEIGHT / array.length
-    static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 10;
-
-    Panel(){
+    Panel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         start();
     }
 
-    public void start()  {
-        for(int i = 0; i < array.length; i++){
+    public void start() {
+        for (int i = 0; i < array.length; i++) {
             array[i] = i;
         }
 
@@ -36,14 +32,14 @@ public class Panel extends JPanel  {
         bubbleSortAnimate();
     }
 
-    public void shuffle(){
+    public void shuffle() {
         // Fisher-Yates (aka Knuth) Shuffle Algorithm -
         // Linear time solution with constant space complexity
         int lastIndex = array.length - 1;
         int randomIndex;
         Random rand = new Random();
 
-        while(lastIndex != 0){
+        while (lastIndex != 0) {
             randomIndex = rand.nextInt(lastIndex - 1 - 0 + 1); // random.nextInt(max - min + 1) + min
             int temp = array[lastIndex];
             array[lastIndex] = array[randomIndex];
@@ -53,20 +49,32 @@ public class Panel extends JPanel  {
 
     }
 
-    public void bubbleSortAnimate(){
+    public boolean isSorted() {
+        boolean result = true;
+
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public void bubbleSortAnimate() {
 
         currentIndex = 0;
 
         Timer timer = new Timer(DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(sortedCondition){
-                    currentIndex = Integer.MAX_VALUE;
-                    ((Timer)e.getSource()).stop(); // stops timer
-                } else {
-                    if(currentIndex >= array.length - 1){
+                if (currentIndex == array.length - 1) {
+                    if (isSorted()) {
+                        currentIndex = Integer.MAX_VALUE;
+                        ((Timer) e.getSource()).stop(); // stops timer
+                    } else {
                         currentIndex = 0;
                     }
+                } else {
                     BubbleSort.bubbleSortStep();
                 }
                 repaint();
@@ -85,14 +93,14 @@ public class Panel extends JPanel  {
             g.setColor(Color.LIGHT_GRAY);
 
             // update this to allow for any number of elements in array to be displayed evenly
-            // height is causeing index 0 to have height of 0;
+            // height is causing index 0 to have height of 0;
             g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
         }
 
-        try{
+        try {
             g.setColor(Color.RED);
             g.fillRect((currentIndex * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[currentIndex] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[currentIndex] * UNIT_SIZE_Y);
-        } catch (Exception ArrayIndexOutOfBoundsException){
+        } catch (Exception ArrayIndexOutOfBoundsException) {
             // do nothing
         }
 

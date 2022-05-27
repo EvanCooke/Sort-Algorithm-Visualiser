@@ -25,12 +25,10 @@ public class BubbleSort {
     }
 
     static void bubbleSortStep() {
-
         if (Panel.array[Panel.currentIndex] > Panel.array[Panel.currentIndex + 1]) {
             int temp = Panel.array[Panel.currentIndex];
             Panel.array[Panel.currentIndex] = Panel.array[Panel.currentIndex + 1];
             Panel.array[Panel.currentIndex + 1] = temp;
-            Panel.sortedCondition = false;
         }
         Panel.currentIndex++;
     }
