@@ -27,7 +27,8 @@ public class Panel extends JPanel {
     }
 
     public void shuffle(){
-        // Fisher-Yates (aka Knuth) Shuffle Algorithm
+        // Fisher-Yates (aka Knuth) Shuffle Algorithm -
+        // Linear time solution with constant space complexity
         int lastIndex = array.length - 1;
         int randomIndex;
         Random rand = new Random();
