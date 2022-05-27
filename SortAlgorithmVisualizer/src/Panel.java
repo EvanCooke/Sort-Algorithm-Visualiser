@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class Panel extends JPanel {
     static final int SCREEN_WIDTH = 1000;
@@ -22,8 +23,22 @@ public class Panel extends JPanel {
             array[i] = i;
         }
 
-        // shuffle array
+        shuffle();
+    }
 
+    public void shuffle(){
+        // Fisher-Yates (aka Knuth) Shuffle Algorithm
+        int lastIndex = array.length - 1;
+        int randomIndex;
+        Random rand = new Random();
+
+        while(lastIndex != 0){
+            randomIndex = rand.nextInt(lastIndex - 1 - 0 + 1); // random.nextInt(max - min + 1) + min
+            int temp = array[lastIndex];
+            array[lastIndex] = array[randomIndex];
+            array[randomIndex] = temp;
+            lastIndex--;
+        }
     }
 
     // we do not need to invoke the paint method because it is called
