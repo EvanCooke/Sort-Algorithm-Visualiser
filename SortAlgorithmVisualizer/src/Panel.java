@@ -51,7 +51,7 @@ public class Panel extends JPanel {
     }
 
     public void draw(Graphics g) {
-        for (int x = 0; x < SCREEN_WIDTH / UNIT_SIZE_X; x++) {
+        for (int x = 0; x < array.length; x++) {
             g.setColor(Color.LIGHT_GRAY);
 
             // update this to allow for any number of elements in array to be displayed evenly
