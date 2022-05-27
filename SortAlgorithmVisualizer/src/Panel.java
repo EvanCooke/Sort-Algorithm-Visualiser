@@ -7,7 +7,8 @@ public class Panel extends JPanel {
 
     final int[] array = new int[100];
 
-    static final int UNIT_SIZE = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / array.length
+    static final int UNIT_SIZE_X = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / array.length
+    static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 100;
 
 
     Panel(){
@@ -20,6 +21,9 @@ public class Panel extends JPanel {
         for(int i = 0; i < array.length; i++){
             array[i] = i;
         }
+
+        // shuffle array
+
     }
 
     // we do not need to invoke the paint method because it is called
@@ -31,9 +35,11 @@ public class Panel extends JPanel {
     }
 
     public void draw(Graphics g) {
-        for (int x = 0; x < SCREEN_WIDTH / UNIT_SIZE; x++) {
+        for (int x = 0; x < SCREEN_WIDTH / UNIT_SIZE_X; x++) {
             g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(x * UNIT_SIZE, SCREEN_HEIGHT - array[x], UNIT_SIZE, array[x]);
+
+            // update this to allow for any number of elements in array to be displayed evenly
+            g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
         }
     }
 
