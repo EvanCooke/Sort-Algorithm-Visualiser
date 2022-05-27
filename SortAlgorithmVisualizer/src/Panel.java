@@ -4,31 +4,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class Panel extends JPanel implements ActionListener {
+public class Panel extends JPanel  {
     static final int SCREEN_WIDTH = 1000;
     static final int SCREEN_HEIGHT = 600;
-    static final int DELAY = 500;
+    static final int DELAY = 1;
 
-    final int[] array = new int[100];
-    Timer timer;
+    static final int[] array = new int[10];
+    static int currentIndex = Integer.MAX_VALUE;
 
-    static final int UNIT_SIZE_X = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / array.length
-    static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 100;
+    boolean running = true;
+    boolean isSorted = false;
+    static boolean sortedCondition = false;
+
+
+    static final int UNIT_SIZE_X = SCREEN_WIDTH / 10; // UNIT_SIZE = SCREEN_HEIGHT / array.length
+    static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 10;
 
     Panel(){
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
-        timer = new Timer(DELAY, this);
-        timer.start();
         start();
     }
 
-    public void start(){
+    public void start()  {
         for(int i = 0; i < array.length; i++){
             array[i] = i;
         }
 
         shuffle();
+
+        bubbleSortAnimate();
     }
 
     public void shuffle(){
@@ -46,25 +51,28 @@ public class Panel extends JPanel implements ActionListener {
             lastIndex--;
         }
 
-        //bubbleSort(array);
     }
 
-    public void bubbleSort(int[] inputArray){
-        boolean swapped;
-        do {
-            swapped = false;
-            for (int i = 0; i < inputArray.length - 1; i++) {
-                if (array[i] > array[i + 1]) {
-                    swapped = true;
-                    int temp = array[i];
-                    array[i] = array[i + 1];
-                    array[i + 1] = temp;
+    public void bubbleSortAnimate(){
+
+        currentIndex = 0;
+
+        Timer timer = new Timer(DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(sortedCondition){
+                    currentIndex = Integer.MAX_VALUE;
+                    ((Timer)e.getSource()).stop(); // stops timer
+                } else {
+                    if(currentIndex >= array.length - 1){
+                        currentIndex = 0;
+                    }
+                    BubbleSort.bubbleSortStep();
                 }
                 repaint();
-                
             }
-        } while (swapped);
-        //return inputArray;
+        });
+        timer.start();
     }
 
     // we do not need to invoke the paint method because it is called
@@ -72,34 +80,21 @@ public class Panel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // paints background?
-        draw(g);
-    }
 
-    public void draw(Graphics g) {
         for (int x = 0; x < array.length; x++) {
             g.setColor(Color.LIGHT_GRAY);
 
             // update this to allow for any number of elements in array to be displayed evenly
+            // height is causeing index 0 to have height of 0;
             g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
         }
-    }
 
-    // executed after DELAY has passed for timer
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        boolean swapped;
-        do {
-            swapped = false;
-            for (int i = 0; i < array.length - 1; i++) {
-                if (array[i] > array[i + 1]) {
-                    swapped = true;
-                    int temp = array[i];
-                    array[i] = array[i + 1];
-                    array[i + 1] = temp;
-                }
-                repaint();
-            }
-        } while (swapped);
-        //return inputArray;
+        try{
+            g.setColor(Color.RED);
+            g.fillRect((currentIndex * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[currentIndex] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[currentIndex] * UNIT_SIZE_Y);
+        } catch (Exception ArrayIndexOutOfBoundsException){
+            // do nothing
+        }
+
     }
 }
