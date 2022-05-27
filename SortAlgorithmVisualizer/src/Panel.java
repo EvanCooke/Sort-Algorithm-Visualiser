@@ -42,6 +42,22 @@ public class Panel extends JPanel {
         }
     }
 
+    public int[] bubbleSort(int[] inputArray){
+        boolean swapped;
+        do {
+            swapped = false;
+            for (int i = 0; i < inputArray.length - 1; i++) {
+                if (array[i] > array[i + 1]) {
+                    swapped = true;
+                    int temp = array[i];
+                    array[i] = array[i + 1];
+                    array[i + 1] = temp;
+                }
+            }
+        } while (swapped);
+        return inputArray;
+    }
+
     // we do not need to invoke the paint method because it is called
     // automatically when we instantiate a component such as a JFrame
     @Override
@@ -58,6 +74,4 @@ public class Panel extends JPanel {
             g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
         }
     }
-
-
 }
