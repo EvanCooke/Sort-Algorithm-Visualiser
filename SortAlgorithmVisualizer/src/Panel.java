@@ -16,10 +16,36 @@ public class Panel extends JPanel {
 
     boolean running = true;
 
+    String[] algorithms = {"Bubble Sort", "Quicksort"};
+
+    JButton startButton = new JButton("Start");
+    JButton resetButton = new JButton("Reset");
+    JComboBox dropDownMenu = new JComboBox(algorithms);
+
     Panel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
-        start();
+
+        startButton.setBackground(Color.WHITE);
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                running = true;
+                start();
+            }
+        });
+
+        resetButton.setBackground(Color.WHITE);
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                running = false;
+                shuffle();
+            }
+        });
+
+        this.add(startButton);
+        this.add(resetButton);
     }
 
     public void start() {
@@ -31,6 +57,7 @@ public class Panel extends JPanel {
 
         bubbleSortAnimate();
     }
+
 
     public void shuffle() {
         // Fisher-Yates (aka Knuth) Shuffle Algorithm -
