@@ -102,7 +102,9 @@ public class Panel extends JPanel {
                         currentIndex = 0;
                     }
                 } else {
-                    BubbleSort.bubbleSortStep();
+                    if(running) {
+                        BubbleSort.bubbleSortStep();
+                    }
                 }
                 repaint();
             }
@@ -124,11 +126,13 @@ public class Panel extends JPanel {
             g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
         }
 
-        try {
-            g.setColor(Color.RED);
-            g.fillRect((currentIndex * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[currentIndex] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[currentIndex] * UNIT_SIZE_Y);
-        } catch (Exception ArrayIndexOutOfBoundsException) {
-            // do nothing
+        if(running) {
+            try {
+                g.setColor(Color.RED);
+                g.fillRect((currentIndex * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[currentIndex] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[currentIndex] * UNIT_SIZE_Y);
+            } catch (Exception ArrayIndexOutOfBoundsException) {
+                // do nothing
+            }
         }
 
     }
