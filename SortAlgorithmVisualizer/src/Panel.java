@@ -14,6 +14,7 @@ public class Panel extends JPanel {
     static int[] array = new int[100];
     static int currentIndex = Integer.MAX_VALUE;
 
+    String selection = "Bubble Sort";
     boolean running = true;
 
     String[] algorithms = {"Bubble Sort", "Quicksort"};
@@ -26,6 +27,7 @@ public class Panel extends JPanel {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
 
+        // start button
         startButton.setBackground(Color.WHITE);
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -35,6 +37,7 @@ public class Panel extends JPanel {
             }
         });
 
+        // reset button
         resetButton.setBackground(Color.WHITE);
         resetButton.addActionListener(new ActionListener() {
             @Override
@@ -44,8 +47,19 @@ public class Panel extends JPanel {
             }
         });
 
+        // drop down menu
+        dropDownMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                JComboBox comboBox = (JComboBox)e.getSource();
+//                selection = (String)comboBox.getSelectedItem();
+                selection = (String)dropDownMenu.getSelectedItem();
+            }
+        });
+
         this.add(startButton);
         this.add(resetButton);
+        this.add(dropDownMenu);
     }
 
     public void start() {
@@ -55,7 +69,14 @@ public class Panel extends JPanel {
 
         shuffle();
 
-        bubbleSortAnimate();
+
+        switch(selection){
+            case "Bubble Sort": bubbleSortAnimate();
+                                break;
+            case "Quicksort": break;
+        }
+//        if(selection.equals("Bubble Sort"))
+//        bubbleSortAnimate();
     }
 
 
@@ -94,19 +115,21 @@ public class Panel extends JPanel {
         Timer timer = new Timer(DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentIndex == array.length - 1) {
-                    if (isSorted()) {
-                        currentIndex = Integer.MAX_VALUE;
-                        ((Timer) e.getSource()).stop(); // stops timer
+                if(selection.equals("Bubble Sort")) {
+                    if (currentIndex == array.length - 1) {
+                        if (isSorted()) {
+                            currentIndex = Integer.MAX_VALUE;
+                            ((Timer) e.getSource()).stop(); // stops timer
+                        } else {
+                            currentIndex = 0;
+                        }
                     } else {
-                        currentIndex = 0;
+                        if (running) {
+                            BubbleSort.bubbleSortStep();
+                        }
                     }
-                } else {
-                    if(running) {
-                        BubbleSort.bubbleSortStep();
-                    }
+                    repaint();
                 }
-                repaint();
             }
         });
         timer.start();
@@ -123,13 +146,15 @@ public class Panel extends JPanel {
 
             // update this to allow for any number of elements in array to be displayed evenly
             // height is causing index 0 to have height of 0;
-            g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
+            g.fillRect((x * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[x] * UNIT_SIZE_Y)),
+                    UNIT_SIZE_X - 1, array[x] * UNIT_SIZE_Y);
         }
 
         if(running) {
             try {
                 g.setColor(Color.RED);
-                g.fillRect((currentIndex * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[currentIndex] * UNIT_SIZE_Y)), UNIT_SIZE_X - 1, array[currentIndex] * UNIT_SIZE_Y);
+                g.fillRect((currentIndex * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[currentIndex] * UNIT_SIZE_Y)),
+                        UNIT_SIZE_X - 1, array[currentIndex] * UNIT_SIZE_Y);
             } catch (Exception ArrayIndexOutOfBoundsException) {
                 // do nothing
             }
