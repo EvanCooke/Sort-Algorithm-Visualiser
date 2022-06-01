@@ -16,6 +16,7 @@ public class Panel extends JPanel {
 
     String selection = "Bubble Sort";
     boolean running = true;
+    Timer timer;
 
     String[] algorithms = {"Bubble Sort", "Quicksort"};
 
@@ -33,6 +34,8 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = true;
+                startButton.setVisible(false);
+                dropDownMenu.setVisible(false);
                 start();
             }
         });
@@ -43,6 +46,9 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = false;
+                startButton.setVisible(true);
+                dropDownMenu.setVisible(true);
+                timer.stop();  // FIX THIS
                 shuffle();
             }
         });
@@ -112,7 +118,7 @@ public class Panel extends JPanel {
 
         currentIndex = 0;
 
-        Timer timer = new Timer(DELAY, new ActionListener() {
+        timer = new Timer(DELAY, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(selection.equals("Bubble Sort")) {
