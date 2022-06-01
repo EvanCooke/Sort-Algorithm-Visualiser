@@ -10,7 +10,7 @@ public class Panel extends JPanel {
     static final int UNIT_SIZE_X = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / array.length
     static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 100;
 
-    static final int DELAY = 1;
+    static int DELAY = 1;
     static int[] array = new int[100];
     static int currentIndex = Integer.MAX_VALUE;
 
@@ -22,8 +22,8 @@ public class Panel extends JPanel {
 
     JButton startButton = new JButton("Start");
     JButton resetButton = new JButton("Reset");
-    JButton incSpeedButton = new JButton("+ Speed");
-    JButton decSpeedButton = new JButton("- Speed");
+    JButton fastButton = new JButton("Speed Up");
+    JButton slowButton = new JButton("Slow Down");
     JComboBox dropDownMenu = new JComboBox(algorithms);
 
     Panel() {
@@ -40,8 +40,7 @@ public class Panel extends JPanel {
                 startButton.setVisible(false);
                 dropDownMenu.setVisible(false);
                 resetButton.setVisible(true);
-                decSpeedButton.setVisible(true);
-                incSpeedButton.setVisible(true);
+                fastButton.setVisible(true);
 
                 start();
             }
@@ -57,8 +56,8 @@ public class Panel extends JPanel {
                 startButton.setVisible(true);
                 dropDownMenu.setVisible(true);
                 resetButton.setVisible(false);
-                incSpeedButton.setVisible(false);
-                decSpeedButton.setVisible(false);
+                fastButton.setVisible(false);
+                slowButton.setVisible(false);
 
                 timer.stop();
                 shuffle();
@@ -76,33 +75,41 @@ public class Panel extends JPanel {
             }
         });
 
-        // increase speed button
-        incSpeedButton.setBackground(Color.WHITE);
-        incSpeedButton.addActionListener(new ActionListener() {
+        // fast speed button
+        fastButton.setBackground(Color.WHITE);
+        fastButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                timer.stop();
+                timer.setDelay(DELAY - 1);
+                timer.start();
+                slowButton.setVisible(true);
+                fastButton.setVisible(false);
             }
         });
 
-        // decrease speed button
-        decSpeedButton.setBackground(Color.WHITE);
-        decSpeedButton.addActionListener(new ActionListener() {
+        // slow speed button
+        slowButton.setBackground(Color.WHITE);
+        slowButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                timer.stop();
+                timer.setDelay(DELAY + 10);
+                timer.start();
+                slowButton.setVisible(false);
+                fastButton.setVisible(true);
             }
         });
 
         this.add(startButton);
         this.add(dropDownMenu);
         this.add(resetButton);
-        this.add(decSpeedButton);
-        this.add(incSpeedButton);
+        this.add(slowButton);
+        this.add(fastButton);
 
         resetButton.setVisible(false);
-        decSpeedButton.setVisible(false);
-        incSpeedButton.setVisible(false);
+        slowButton.setVisible(false);
+        fastButton.setVisible(false);
     }
 
     public void start() {
@@ -216,15 +223,15 @@ public class Panel extends JPanel {
             } catch (Exception ArrayIndexOutOfBoundsException) {
                 // do nothing
             }
-        }
 
-        if(selection.equals("Selection Sort")){
-            try {
-                g.setColor(Color.RED);
-                g.fillRect((SelectionSort.min * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[SelectionSort.min] * UNIT_SIZE_Y)),
-                        UNIT_SIZE_X - 1, array[SelectionSort.min] * UNIT_SIZE_Y);
-            } catch (Exception ArrayIndexOutOfBoundsException) {
-                // do nothing
+            if(selection.equals("Selection Sort")){
+                try {
+                    g.setColor(Color.RED);
+                    g.fillRect((SelectionSort.min * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[SelectionSort.min] * UNIT_SIZE_Y)),
+                            UNIT_SIZE_X - 1, array[SelectionSort.min] * UNIT_SIZE_Y);
+                } catch (Exception ArrayIndexOutOfBoundsException) {
+                    // do nothing
+                }
             }
         }
     }
