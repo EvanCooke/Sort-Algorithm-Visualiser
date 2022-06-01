@@ -18,10 +18,12 @@ public class Panel extends JPanel {
     boolean running = true;
     Timer timer;
 
-    String[] algorithms = {"Bubble Sort", "Quicksort"};
+    String[] algorithms = {"Bubble Sort", "Selection Sort"};
 
     JButton startButton = new JButton("Start");
     JButton resetButton = new JButton("Reset");
+    JButton incSpeedButton = new JButton("+ Speed");
+    JButton decSpeedButton = new JButton("- Speed");
     JComboBox dropDownMenu = new JComboBox(algorithms);
 
     Panel() {
@@ -34,8 +36,13 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = true;
+
                 startButton.setVisible(false);
                 dropDownMenu.setVisible(false);
+                resetButton.setVisible(true);
+                decSpeedButton.setVisible(true);
+                incSpeedButton.setVisible(true);
+
                 start();
             }
         });
@@ -46,10 +53,16 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 running = false;
+
                 startButton.setVisible(true);
                 dropDownMenu.setVisible(true);
-                timer.stop();  // FIX THIS
+                resetButton.setVisible(false);
+                incSpeedButton.setVisible(false);
+                decSpeedButton.setVisible(false);
+
+                timer.stop();
                 shuffle();
+                repaint();
             }
         });
 
@@ -63,9 +76,33 @@ public class Panel extends JPanel {
             }
         });
 
+        // increase speed button
+        incSpeedButton.setBackground(Color.WHITE);
+        incSpeedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // decrease speed button
+        decSpeedButton.setBackground(Color.WHITE);
+        decSpeedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
         this.add(startButton);
-        this.add(resetButton);
         this.add(dropDownMenu);
+        this.add(resetButton);
+        this.add(decSpeedButton);
+        this.add(incSpeedButton);
+
+        resetButton.setVisible(false);
+        decSpeedButton.setVisible(false);
+        incSpeedButton.setVisible(false);
     }
 
     public void start() {
@@ -75,14 +112,12 @@ public class Panel extends JPanel {
 
         shuffle();
 
-
         switch(selection){
             case "Bubble Sort": bubbleSortAnimate();
                                 break;
-            case "Quicksort": break;
+            case "Selection Sort": selectionSortAnimate();
+                                break;
         }
-//        if(selection.equals("Bubble Sort"))
-//        bubbleSortAnimate();
     }
 
 
@@ -141,11 +176,28 @@ public class Panel extends JPanel {
         timer.start();
     }
 
+    public void selectionSortAnimate(){
+        currentIndex = 0;
+
+        timer = new Timer(DELAY, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(selection.equals("Selection Sort")) {
+                    if (running) {
+                        SelectionSort.selectionSortStep();
+                    }
+                    repaint();
+                }
+            }
+        });
+        timer.start();
+    }
+
     // we do not need to invoke the paint method because it is called
     // automatically when we instantiate a component such as a JFrame
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g); // paints background?
+        super.paintComponent(g); // paints background
 
         for (int x = 0; x < array.length; x++) {
             g.setColor(Color.LIGHT_GRAY);
@@ -166,5 +218,14 @@ public class Panel extends JPanel {
             }
         }
 
+        if(selection.equals("Selection Sort")){
+            try {
+                g.setColor(Color.RED);
+                g.fillRect((SelectionSort.min * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[SelectionSort.min] * UNIT_SIZE_Y)),
+                        UNIT_SIZE_X - 1, array[SelectionSort.min] * UNIT_SIZE_Y);
+            } catch (Exception ArrayIndexOutOfBoundsException) {
+                // do nothing
+            }
+        }
     }
 }
