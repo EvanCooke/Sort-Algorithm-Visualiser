@@ -191,7 +191,10 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(selection.equals("Selection Sort")) {
-                    if (running) {
+                    if(isSorted()){
+                        currentIndex = Integer.MAX_VALUE;
+                        ((Timer) e.getSource()).stop(); // stops timer
+                    } else if (running) {
                         SelectionSort.selectionSortStep();
                     }
                     repaint();

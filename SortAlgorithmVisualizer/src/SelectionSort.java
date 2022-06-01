@@ -27,6 +27,7 @@ public class SelectionSort {
 
             i++;
             Panel.currentIndex = i;
+
         }else {
             if (Panel.array[Panel.currentIndex] < Panel.array[min]) {
                 min = Panel.currentIndex;
