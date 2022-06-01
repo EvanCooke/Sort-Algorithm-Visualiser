@@ -184,6 +184,7 @@ public class Panel extends JPanel {
     }
 
     public void selectionSortAnimate(){
+
         currentIndex = 0;
 
         timer = new Timer(DELAY, new ActionListener() {

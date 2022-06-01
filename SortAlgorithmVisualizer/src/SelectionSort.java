@@ -2,8 +2,6 @@ public class SelectionSort {
 
     static int min = Panel.array[0];
     static int i = 0;
-    static boolean innerLoopFlag = true;
-    static boolean outerLoopFlag= false;
 
     // normal implementation of e Sort Algorithm
     static void sectionSort(){
@@ -22,23 +20,18 @@ public class SelectionSort {
     }
 
     static void selectionSortStep(){
-        if(innerLoopFlag) {
-            if(Panel.currentIndex >= Panel.array.length - 1){
-//                innerLoopFlag = false;
-//                outerLoopFlag = true;
+        if(Panel.currentIndex >= Panel.array.length){
+            int temp = Panel.array[min];
+            Panel.array[min] = Panel.array[i];
+            Panel.array[i] = temp;
 
-                int temp = Panel.array[min];
-                Panel.array[min] = Panel.array[i];
-                Panel.array[i] = temp;
-
-                i++;
-                Panel.currentIndex = i;
-            }else {
-                if (Panel.array[Panel.currentIndex] < Panel.array[min]) {
-                    min = Panel.currentIndex;
-                }
-                Panel.currentIndex++;
+            i++;
+            Panel.currentIndex = i;
+        }else {
+            if (Panel.array[Panel.currentIndex] < Panel.array[min]) {
+                min = Panel.currentIndex;
             }
+            Panel.currentIndex++;
         }
     }
 
