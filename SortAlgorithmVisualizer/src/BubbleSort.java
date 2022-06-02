@@ -3,7 +3,7 @@ public class BubbleSort {
     // normal implementation of bubble sort algorithm
     static void bubbleSort() {
         boolean swapped;
-        int n = Panel.array.length;
+        int n = Panel.arrayLength;
         int temp;
 
         for (int i = 0; i < (n - 1); i++) {

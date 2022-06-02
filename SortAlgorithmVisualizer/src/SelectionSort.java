@@ -6,9 +6,9 @@ public class SelectionSort {
     // normal implementation of e Sort Algorithm
     static void sectionSort(){
         int min, temp;
-        for(int i = 0; i < Panel.array.length - 1; i++){
+        for(int i = 0; i < Panel.arrayLength - 1; i++){
             min = i;
-            for(int x  = i+1; x < Panel.array.length; x++){
+            for(int x  = i+1; x < Panel.arrayLength; x++){
                 if(Panel.array[x] < Panel.array[min]){
                     min = x;
                 }
@@ -20,7 +20,7 @@ public class SelectionSort {
     }
 
     static void selectionSortStep(){
-        if(Panel.currentIndex >= Panel.array.length){
+        if(Panel.currentIndex >= Panel.arrayLength){
             int temp = Panel.array[min];
             Panel.array[min] = Panel.array[i];
             Panel.array[i] = temp;

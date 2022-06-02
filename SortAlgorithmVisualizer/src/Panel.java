@@ -7,11 +7,12 @@ import java.util.Random;
 public class Panel extends JPanel {
     static final int SCREEN_WIDTH = 1000;
     static final int SCREEN_HEIGHT = 600;
-    static final int UNIT_SIZE_X = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / array.length
+    static final int UNIT_SIZE_X = SCREEN_WIDTH / 100; // UNIT_SIZE = SCREEN_HEIGHT / arrayLength
     static final int UNIT_SIZE_Y = SCREEN_HEIGHT / 100;
 
     static int DELAY = 1;
     static int[] array = new int[100];
+    static int arrayLength = 100;
     static int currentIndex = Integer.MAX_VALUE;
 
     String selection = "Bubble Sort";
@@ -113,7 +114,7 @@ public class Panel extends JPanel {
     }
 
     public void start() {
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < arrayLength; i++) {
             array[i] = i;
         }
 
@@ -131,7 +132,7 @@ public class Panel extends JPanel {
     public void shuffle() {
         // Fisher-Yates (aka Knuth) Shuffle Algorithm -
         // Linear time solution with constant space complexity
-        int lastIndex = array.length - 1;
+        int lastIndex = arrayLength - 1;
         int randomIndex;
         Random rand = new Random();
 
@@ -148,7 +149,7 @@ public class Panel extends JPanel {
     public boolean isSorted() {
         boolean result = true;
 
-        for (int i = 0; i < array.length - 1; i++) {
+        for (int i = 0; i < arrayLength - 1; i++) {
             if (array[i] > array[i + 1]) {
                 result = false;
             }
@@ -164,7 +165,7 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(selection.equals("Bubble Sort")) {
-                    if (currentIndex == array.length - 1) {
+                    if (currentIndex == arrayLength - 1) {
                         if (isSorted()) {
                             currentIndex = Integer.MAX_VALUE;
                             ((Timer) e.getSource()).stop(); // stops timer
@@ -210,7 +211,7 @@ public class Panel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // paints background
 
-        for (int x = 0; x < array.length; x++) {
+        for (int x = 0; x < arrayLength; x++) {
             g.setColor(Color.LIGHT_GRAY);
 
             // update this to allow for any number of elements in array to be displayed evenly
