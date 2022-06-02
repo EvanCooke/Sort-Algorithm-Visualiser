@@ -230,12 +230,14 @@ public class Panel extends JPanel {
             }
 
             if(selection.equals("Selection Sort")){
-                try {
-                    g.setColor(Color.RED);
-                    g.fillRect((SelectionSort.min * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[SelectionSort.min] * UNIT_SIZE_Y)),
-                            UNIT_SIZE_X - 1, array[SelectionSort.min] * UNIT_SIZE_Y);
-                } catch (Exception ArrayIndexOutOfBoundsException) {
-                    // do nothing
+                if(SelectionSort.min != arrayLength - 1) {
+                    try {
+                        g.setColor(Color.RED);
+                        g.fillRect((SelectionSort.min * UNIT_SIZE_X) + 1, (SCREEN_HEIGHT - (array[SelectionSort.min] * UNIT_SIZE_Y)),
+                                UNIT_SIZE_X - 1, array[SelectionSort.min] * UNIT_SIZE_Y);
+                    } catch (Exception ArrayIndexOutOfBoundsException) {
+                        // do nothing
+                    }
                 }
             }
         }
